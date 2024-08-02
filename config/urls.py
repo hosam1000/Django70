@@ -18,9 +18,13 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import include, path
 from web_project.views import SystemView
+#from django.shortcuts import redirect
 
 urlpatterns = [
     path("admin/", admin.site.urls),
+
+    # Redirect root URL to login
+    #path("", lambda request: redirect('auth-login-basic'), name='root_redirect'),
 
     # Dashboard urls
     path("", include("apps.dashboards.urls")),
