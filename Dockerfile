@@ -10,10 +10,15 @@ COPY . /app
 # Install any needed packages specified in requirements.txt
 RUN pip install --no-cache-dir -r requirements.txt
 
+# Collect static files
+RUN python manage.py collectstatic --noinput
+
+# Apply migrations
+RUN python manage.py migrate
+
 # Set environment variables
 ENV NAME=World
-# Updated path 
-ENV DJANGO_SETTINGS_MODULE=config.settings 
+ENV DJANGO_SETTINGS_MODULE=confi.settings
 ENV PORT=8000
 
 # Expose the port the app runs on
