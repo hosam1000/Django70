@@ -1,6 +1,6 @@
 {
   "editor.wordWrap": "off",
-  "editor.formatOnSave": true,
+  "editor.formatOnSave": false,
   "files.trimFinalNewlines": true,
   "diffEditor.ignoreTrimWhitespace": false,
   "cSpell.language": "en",
