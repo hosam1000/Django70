@@ -12,8 +12,8 @@ RUN pip install --no-cache-dir -r requirements.txt
 
 # Set environment variables
 ENV NAME=World
-# Updated path 
-ENV DJANGO_SETTINGS_MODULE=config.settings 
+# Updated path
+ENV DJANGO_SETTINGS_MODULE=config.settings
 ENV PORT=8000
 
 # Expose the port the app runs on
