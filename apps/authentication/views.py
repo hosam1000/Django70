@@ -2,11 +2,13 @@
 
 from django.shortcuts import redirect
 from django.views.generic import TemplateView
-from django.contrib.auth import login
 from web_project import TemplateLayout
 from web_project.template_helpers.theme import TemplateHelper
-from .forms import UserRegistrationForm
+from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
+from django.contrib.auth import login, authenticate
+from django.contrib.auth import get_user_model
 
+User = get_user_model()
 
 class AuthView(TemplateView):
     def get_context_data(self, **kwargs):
@@ -19,20 +21,34 @@ class AuthView(TemplateView):
         return context
 
     def post(self, request, *args, **kwargs):
-        if 'auth_register_basic' in request.path:
-            form = UserRegistrationForm(request.POST)
+        if 'auth/register' in request.path:
+            form = UserCreationForm(request.POST)
             if form.is_valid():
-                user = form.save(commit=False)
-                user.set_password(form.cleaned_data['password'])
-                user.save()
+                user = User.objects.create_user(**form.cleaned_data)
                 login(request, user)
-                return redirect('index')  # Redirect to a success page
+                return redirect('auth-login-basic')  # Redirect to the home page or success page
             else:
-                return self.render_to_response(self.get_context_data(form=form))
-        return super().post(request, *args, **kwargs)
+                context = self.get_context_data(form=form)
+                return self.render_to_response(context)
+        elif 'auth/login' in request.path:
+            form = AuthenticationForm(request, data=request.POST)
+            if form.is_valid():
+                user = authenticate(username=form.cleaned_data['username'], password=form.cleaned_data['password'])
+                if user is not None:
+                    login(request, user)
+                    return redirect('auth-login-basic')  # Redirect to the home page or success page
+            context = self.get_context_data(form=form)
+            return self.render_to_response(context)
+        else:
+            return self.render_to_response(self.get_context_data())
 
-    def get(self, request, *args, **kwargs):
-        if 'auth_register_basic' in request.path:
-            form = UserRegistrationForm()
-            return self.render_to_response(self.get_context_data(form=form))
-        return super().get(request, *args, **kwargs)
+    # def get(self, request, *args, **kwargs):
+    #     if 'auth/register' in request.path:
+    #         form = UserCreationForm()
+    #         context = self.get_context_data(form=form)
+    #         return self.render_to_response(context)
+    #     elif 'auth/login' in request.path:
+    #         form = AuthenticationForm()
+    #         context = self.get_context_data(form=form)
+    #         return self.render_to_response(context)
+    #     return super().get(request, *args, **kwargs)
