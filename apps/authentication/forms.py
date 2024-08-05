@@ -19,3 +19,7 @@ class UserCreationForm(forms.ModelForm):
 
         if password != confirm_password:
             raise ValidationError("Passwords do not match")
+
+class UserLoginForm(forms.Form):
+    username = forms.CharField()
+    password = forms.CharField(widget=forms.PasswordInput)

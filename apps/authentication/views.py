@@ -1,12 +1,10 @@
-# apps/authentication/views.py
-
 from django.shortcuts import redirect
 from django.views.generic import TemplateView
 from web_project import TemplateLayout
 from web_project.template_helpers.theme import TemplateHelper
-from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from django.contrib.auth import login, authenticate
 from django.contrib.auth import get_user_model
+from .forms import UserCreationForm, UserLoginForm
 
 User = get_user_model()
 
@@ -24,31 +22,33 @@ class AuthView(TemplateView):
         if 'auth/register' in request.path:
             form = UserCreationForm(request.POST)
             if form.is_valid():
-                user = User.objects.create_user(**form.cleaned_data)
+                user = form.save()
                 login(request, user)
                 return redirect('auth-login-basic')  # Redirect to the home page or success page
             else:
                 context = self.get_context_data(form=form)
                 return self.render_to_response(context)
         elif 'auth/login' in request.path:
-            form = AuthenticationForm(request, data=request.POST)
+            form = UserLoginForm(request.POST)
             if form.is_valid():
-                user = authenticate(username=form.cleaned_data['username'], password=form.cleaned_data['password'])
+                username = form.cleaned_data['username']
+                password = form.cleaned_data['password']
+                user = authenticate(username=username, password=password)
                 if user is not None:
                     login(request, user)
-                    return redirect('auth-login-basic')  # Redirect to the home page or success page
+                    return redirect('index')  # Redirect to the dashboard
             context = self.get_context_data(form=form)
             return self.render_to_response(context)
         else:
             return self.render_to_response(self.get_context_data())
 
-    # def get(self, request, *args, **kwargs):
-    #     if 'auth/register' in request.path:
-    #         form = UserCreationForm()
-    #         context = self.get_context_data(form=form)
-    #         return self.render_to_response(context)
-    #     elif 'auth/login' in request.path:
-    #         form = AuthenticationForm()
-    #         context = self.get_context_data(form=form)
-    #         return self.render_to_response(context)
-    #     return super().get(request, *args, **kwargs)
+    def get(self, request, *args, **kwargs):
+        if 'auth/register' in request.path:
+            form = UserCreationForm()
+            context = self.get_context_data(form=form)
+            return self.render_to_response(context)
+        elif 'auth/login' in request.path:
+            form = UserLoginForm()
+            context = self.get_context_data(form=form)
+            return self.render_to_response(context)
+        return super().get(request, *args, **kwargs)
