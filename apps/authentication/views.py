@@ -36,7 +36,7 @@ class AuthView(TemplateView):
                 user = authenticate(username=username, password=password)
                 if user is not None:
                     login(request, user)
-                    return redirect('index')  # Redirect to the dashboard
+                    return redirect('dashboard-analytics')  # Redirect to the dashboard
             context = self.get_context_data(form=form)
             return self.render_to_response(context)
         else:
