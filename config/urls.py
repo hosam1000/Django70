@@ -18,21 +18,16 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import include, path
 from web_project.views import SystemView
+#from apps.authentication.views import AuthView
 #from django.shortcuts import redirect
 
 urlpatterns = [
-    # path(
-    #     '',
-    #     AuthView.as_view(template_name="auth_login_basic.html"),
-    #     name="auth-login-basic",
-    #  ),
 
     path("admin/", admin.site.urls),
 
 
-
-    # Redirect root URL to login
-    #path("", lambda request: redirect('auth-login-basic'), name='root_redirect'),
+    # Auth urls
+    path("", include("apps.authentication.urls")),
 
     # Dashboard urls
     path("", include("apps.dashboards.urls")),
@@ -43,8 +38,6 @@ urlpatterns = [
     # Pages urls
     path("", include("apps.pages.urls")),
 
-    # Auth urls
-    path("", include("apps.authentication.urls")),
 
     # Card urls
     path("", include("apps.cards.urls")),

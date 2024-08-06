@@ -4,7 +4,7 @@ from .views import AuthView, LoginView, RegistrationView
 
 urlpatterns = [
     path(
-        "auth/login/",
+        "",
         LoginView.as_view(template_name="auth_login_basic.html"),
         name="auth-login-basic",
     ),
