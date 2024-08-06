@@ -30,11 +30,18 @@
           <h4 class="mb-2">Welcome to myWebsite! 👋</h4>
           <p class="mb-4">Please sign-in to your account and start the adventure</p>
 
+          <!-- Error Messages -->
+          {% if form.non_field_errors %}
+          <div class="alert alert-danger" role="alert">
+            {{ form.non_field_errors|striptags }}
+          </div>
+          {% endif %}
+
           <form id="UserLoginForm" class="mb-3" action="{% url 'auth-login-basic' %}" method="post">
               {% csrf_token %}
               <div class="mb-3">
-                  <label for="email" class="form-label">Email or Username</label>
-                  <input type="text" class="form-control" id="email" name="username" placeholder="Enter your email or username" autofocus>
+                  <label for="username" class="form-label">Email or Username</label>
+                  <input type="text" class="form-control" id="username" name="username" placeholder="Enter your email or username" autofocus>
               </div>
               <div class="mb-3 form-password-toggle">
                   <div class="d-flex justify-content-between">
@@ -60,7 +67,6 @@
                   <button class="btn btn-primary d-grid w-100" type="submit">Sign in</button>
               </div>
           </form>
-
 
           <p class="text-center">
             <span>New on our platform?</span>

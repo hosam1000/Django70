@@ -1,16 +1,16 @@
 from django.urls import path
-from .views import AuthView
+from .views import AuthView, LoginView, RegistrationView
 
 
 urlpatterns = [
     path(
         "auth/login/",
-        AuthView.as_view(template_name="auth_login_basic.html"),
+        LoginView.as_view(template_name="auth_login_basic.html"),
         name="auth-login-basic",
     ),
     path(
         "auth/register/",
-        AuthView.as_view(template_name="auth_register_basic.html"),
+        RegistrationView.as_view(template_name="auth_register_basic.html"),
         name="auth-register-basic",
     ),
     path(

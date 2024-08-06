@@ -7,9 +7,8 @@
 
 {% block page_css %}
 {{ block.super }}
-<link rel="stylesheet" href="{% static  'vendor/css/pages/page-auth.css' %}">
+<link rel="stylesheet" href="{% static 'vendor/css/pages/page-auth.css' %}">
 {% endblock page_css %}
-
 
 {% block content %}
 <div class="container-xxl">
@@ -32,6 +31,18 @@
           <h4 class="mb-2">Adventure starts here 🚀</h4>
           <p class="mb-4">Make your app management easy and fun!</p>
 
+          <!-- Error Messages -->
+          {% if form.errors %}
+          <div class="alert alert-danger" role="alert">
+            <ul class="mb-0">
+              {% for field, errors in form.errors.items %}
+              <li>{{ field }}: {{ errors }}</li>
+              {% endfor %}
+            </ul>
+          </div>
+          {% endif %}
+
+          <!-- Registration Form -->
           <form id="UserCreationForm" class="mb-3" action="{% url 'auth-register-basic' %}" method="post">
             {% csrf_token %}
             <div class="mb-3">
@@ -49,7 +60,13 @@
                 <span class="input-group-text cursor-pointer"><i class="bx bx-hide"></i></span>
               </div>
             </div>
-
+            <div class="mb-3 form-password-toggle">
+              <label class="form-label" for="confirm_password">Confirm Password</label>
+              <div class="input-group input-group-merge">
+                <input type="password" id="confirm_password" class="form-control" name="confirm_password" placeholder="&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;" aria-describedby="confirm_password" />
+                <span class="input-group-text cursor-pointer"><i class="bx bx-hide"></i></span>
+              </div>
+            </div>
             <div class="mb-3">
               <div class="form-check">
                 <input class="form-check-input" type="checkbox" id="terms-conditions" name="terms">
@@ -72,7 +89,7 @@
           </p>
         </div>
       </div>
-      <!-- Register Card -->
+      <!-- /Register Card -->
     </div>
   </div>
 </div>
