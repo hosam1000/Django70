@@ -21,7 +21,15 @@ from web_project.views import SystemView
 #from django.shortcuts import redirect
 
 urlpatterns = [
+    # path(
+    #     '',
+    #     AuthView.as_view(template_name="auth_login_basic.html"),
+    #     name="auth-login-basic",
+    #  ),
+
     path("admin/", admin.site.urls),
+
+
 
     # Redirect root URL to login
     #path("", lambda request: redirect('auth-login-basic'), name='root_redirect'),
